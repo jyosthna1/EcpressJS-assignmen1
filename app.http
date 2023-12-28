@@ -6,13 +6,13 @@ POST http://localhost:3000/todos/
 Content-Type: application/json
 
 {
- "id": 6,
- "todo": "Finalize event theme",
+ "id": 3,
+ "todo": "Clean the garden",
  "priority": "LOW",
  "status": "TO DO",
  "category": "HOME",
- "dueDate": "2021-02-22"
-}
+ "dueDate": "2021-12-12"
+ }
 
 ###
 DELETE http://localhost:3000/todos/1

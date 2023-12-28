@@ -152,19 +152,22 @@ app.get("/agenda", async (request, response) => {
   const { date } = request.query;
   const valid = isValid(new Date(date));
 
-  const formatDate = formatISO(new Date(date));
-  const formatInto = format(new Date(formatDate), "yyyy-MM-dd");
-
-  const year = getYear(new Date(formatInto));
-  const month = getMonth(new Date(formatInto)) + 1;
-  const dateGiven = getDate(new Date(formatInto));
   if (valid === false) {
     response.status(400);
     response.send("Invalid Due Date");
-  } else {
+  }
+
+  if (valid === true) {
+    const formatDate = formatISO(new Date(date));
+    const formatInto = format(new Date(formatDate), "yyyy-MM-dd");
+
+    const year = getYear(new Date(formatInto));
+    const month = getMonth(new Date(formatInto)) + 1;
+    const dateGiven = getDate(new Date(formatInto));
     const dateQuery = `SELECT * FROM todo WHERE 
   strftime('%Y',due_date)='${year}' AND strftime('%m',due_date)='${month}' AND strftime('%d',due_date)='${dateGiven}';`;
     const dateQueryResponse = await database.all(dateQuery);
+
     response.send(
       dateQueryResponse.map((eacDate) => convertDataObject(eacDate))
     );
@@ -177,7 +180,6 @@ app.post("/todos/", async (request, response) => {
   const { id, todo, priority, status, category, dueDate } = request.body;
   const requestBody = request.body;
   const valid = isValid(new Date(dueDate));
-  console.log(valid);
 
   if (
     (requestBody.category !== "WORK") ^
